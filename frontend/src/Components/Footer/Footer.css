@@ -20,13 +20,13 @@
 .footer-links {
     display: flex;
     list-style: none;
-    gap: 50px;
+    gap: 10px;
     color: #252525;
-    font-size: 20px;
+    font-size: 10px;
 }
 .footer-links li {
     cursor: pointer;
-    font-size: 25px;
+    font-size: 20px;
     padding: 20px;
 }
 .footer-social-icon {
@@ -55,4 +55,32 @@
     border-radius:10px;
     height: 3px;
     background: #c7c7c7;
+}
+@media (max-width:800px) {
+    .footer {
+        gap: 20px;
+    }
+    .footer-logo{
+        gap: 10px;
+        align-items: end;
+    }
+    .footer-logo img{
+        width: 40px;
+    }
+    .footer-logo p {
+        font-size: 25px;
+    }
+    .footer-links {
+        font-size: 8px;
+        gap: 0;
+    }
+    .footer-links li  {
+        font-size: 13px;
+    }
+    .footer-social-icon img {
+        width: 22px;
+    }
+    .footer-copyright {
+        font-size: 13px;
+    }
 }
