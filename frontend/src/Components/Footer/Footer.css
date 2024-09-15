@@ -80,7 +80,7 @@
         font-size: 10px;
     }
     .footer-copyright hr {
-       width: 125%;
+       width: 100%;
     }
     .footer-social-icon img {
         width: 22px;
@@ -91,9 +91,11 @@
 }
 @media (max-width:500px) { 
     .footer {
+        margin-top:100px;
         width: 90%;
     }
     .footer-copyright hr {
-        width: 150%;
+        width: 100%;
+        margin-left: 50px;
      }
 }
