@@ -91,6 +91,7 @@
 }
 @media (max-width:500px) { 
     .footer {
+        margin-top:20px;
         width: 90%;
     }
     .footer-copyright hr {
