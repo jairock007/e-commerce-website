@@ -96,6 +96,7 @@
         width: 90%;
     }
     .footer-copyright hr {
-        width: 150%;
+        width: 100%;
+        margin-left: 50px;
      }
 }
