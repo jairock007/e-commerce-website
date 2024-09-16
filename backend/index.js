@@ -10,7 +10,11 @@ const { log, error } = require("console");
 const { type } = require("os");
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://e-commerce-website-ten-delta.vercel.app",
+  })
+);
 
 // Database Connection With MongoDB
 mongoose.connect(
