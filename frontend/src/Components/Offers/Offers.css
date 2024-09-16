@@ -124,6 +124,7 @@
 }
 @media (max-width:500px) {
     .offers {
+        width: 70%;
         height: 25vh;
         margin-bottom: 50px;
     }
@@ -138,6 +139,7 @@
     }
     .offers-right img {
         width: 120px;
+        margin-left: 70px;
     }
     .offers-left button {
         width: 120px;
