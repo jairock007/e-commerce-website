@@ -26,7 +26,7 @@ const AddProduct = () => {
     let formData = new FormData();
     formData.append("product", image);
 
-    await fetch("https://e-commerce-website-u9x5.vercel.app/upload", {
+    await fetch("https://e-commerce-website-ogbc.vercel.app/upload", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -40,7 +40,7 @@ const AddProduct = () => {
     if (responseData.success) {
       product.image = responseData.image_url;
       console.log(product);
-      await fetch("https://e-commerce-website-u9x5.vercel.app/addproduct", {
+      await fetch("https://e-commerce-website-ogbc.vercel.app/addproduct", {
         method: "POST",
         headers: {
           Accept: "application/json",
