@@ -3,6 +3,7 @@ import "./ProductDisplay.css";
 import star_icon from "../Assets/star_icon.png";
 import star_dull_icon from "../Assets/star_dull_icon.png";
 import { ShopContext } from "../../Context/ShopContext";
+import swal from "sweetalert";
 
 const ProductDisplay = (props) => {
   const { product } = props;
@@ -55,7 +56,12 @@ const ProductDisplay = (props) => {
         <button
           onClick={() => {
             addToCart(product.id);
-            alert("1 item added to Cart");
+            swal({
+              title: "Good job!",
+              text: "1 item added to Cart",
+              icon: "success",
+              button: "Aww yiss!",
+            });
           }}
         >
           ADD TO CART
