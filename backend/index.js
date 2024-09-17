@@ -12,7 +12,9 @@ const { type } = require("os");
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://e-commerce-website-ten-delta.vercel.app",
+    origin: "https://e-commerce-website-ten-delta.vercel.app", // Replace with your frontend URL
+    methods: "GET,POST,OPTIONS", // Allow necessary methods
+    credentials: true, // If you need to send cookies
   })
 );
 
@@ -208,9 +210,9 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.listen(port, (error) => {
+app.listen(5000, (error) => {
   if (!error) {
-    console.log("Server Running on Port " + port);
+    console.log("Server Running on Port " + 5000);
   } else {
     console.log("Error : " + error);
   }
