@@ -53,11 +53,9 @@ const ProductDisplay = (props) => {
           </div>
         </div>
         <button
-          onChange={() => {
-            alert("1 item added to Cart");
-          }}
           onClick={() => {
             addToCart(product.id);
+            alert("1 item added to Cart");
           }}
         >
           ADD TO CART
