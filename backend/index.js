@@ -10,13 +10,7 @@ const { log, error } = require("console");
 const { type } = require("os");
 
 app.use(express.json());
-app.use(
-  cors({
-    origin: "https://e-commerce-website-ten-delta.vercel.app", // Replace with your frontend URL
-    methods: "GET,POST,OPTIONS", // Allow necessary methods
-    credentials: true, // If you need to send cookies
-  })
-);
+app.use(cors());
 
 // Database Connection With MongoDB
 mongoose.connect(
@@ -50,7 +44,7 @@ app.use("/images", express.static("upload/images"));
 app.post("/upload", upload.single("product"), (req, res) => {
   res.json({
     success: 1,
-    image_url: `https://e-commerce-website-ogbc.vercel.app/images/${req.file.filename}`,
+    image_url: `http://localhost:4000/images/${req.file.filename}`,
   });
 });
 
@@ -210,9 +204,9 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.listen(5000, (error) => {
+app.listen(4000, (error) => {
   if (!error) {
-    console.log("Server Running on Port " + 5000);
+    console.log("Server Running on Port " + 4000);
   } else {
     console.log("Error : " + error);
   }
