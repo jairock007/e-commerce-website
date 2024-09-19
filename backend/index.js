@@ -1,4 +1,4 @@
-//const port = 4000;
+const port = 4000;
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -8,6 +8,7 @@ const path = require("path");
 const cors = require("cors");
 const { log, error } = require("console");
 const { type } = require("os");
+const { send } = require("process");
 
 app.use(express.json());
 app.use(cors());
@@ -44,7 +45,7 @@ app.use("/images", express.static("upload/images"));
 app.post("/upload", upload.single("product"), (req, res) => {
   res.json({
     success: 1,
-    image_url: `http://localhost:4000/images/${req.file.filename}`,
+    image_url: `http://localhost:${port}/images/${req.file.filename}`,
   });
 });
 
@@ -143,7 +144,7 @@ const Users = mongoose.model("Users", {
   password: {
     type: String,
   },
-  carData: {
+  cartData: {
     type: Object,
   },
   date: {
@@ -158,7 +159,9 @@ app.post("/signup", async (req, res) => {
   if (check) {
     return res.status(400).json({
       success: false,
-      errors: "existing user found with same email address",
+      title: "Try Again!",
+      text: "existing user found with same email address",
+      icon: "error",
     });
   }
   let cart = {};
@@ -166,7 +169,7 @@ app.post("/signup", async (req, res) => {
     cart[i] = 0;
   }
   const user = new Users({
-    name: req.body.name,
+    name: req.body.username,
     email: req.body.email,
     password: req.body.password,
     cartData: cart,
@@ -197,16 +200,85 @@ app.post("/login", async (req, res) => {
       const token = jwt.sign(data, "secret_ecom");
       res.json({ success: true, token });
     } else {
-      res.json({ success: false, errors: "Wrong Password" });
+      res.json({
+        success: false,
+        title: "Try Again!",
+        text: "Wrong Password",
+        icon: "error",
+      });
     }
   } else {
-    res.json({ success: false, errors: "Wrong Email Id" });
+    res.json({
+      success: false,
+      title: "Try Again!",
+      text: "Wrong Email ID",
+      icon: "error",
+    });
   }
 });
 
-app.listen(4000, (error) => {
+// Creating endpoint for new collection data
+app.get("/newcollections", async (req, res) => {
+  let products = await Product.find({});
+  let newcollection = products.slice(1).slice(-8);
+  console.log("NewCollection Fetched");
+  res.send(newcollection);
+});
+
+// Creating endpoint for popular in women section
+app.get("/popularinwomen", async (req, res) => {
+  let products = await Product.find({ category: "women" });
+  let popular_in_women = products.slice(0, 4);
+  console.log("Popular in women Fetched");
+  res.send(popular_in_women);
+});
+
+// Creating middleware to fetch user
+const fetchUser = async (req, res, next) => {
+  const token = req.header("auth-token");
+  if (!token) {
+    res.status(401).send({ errors: "Please Authenticate using valid token" });
+  } else {
+    try {
+      const data = jwt.verify(token, "secret_ecom");
+      req.user = data.user;
+      next();
+    } catch (error) {
+      req
+        .status(401)
+        .send({ errors: "please authenticate using a valid token" });
+    }
+  }
+};
+
+// Creating endpoint for adding products in cartdata
+app.post("/addtocart", fetchUser, async (req, res) => {
+  console.log("Added", req.body.itemId);
+  let userData = await Users.findOne({ _id: req.user.id });
+  userData.cartData[req.body.itemId] += 1;
+  await Users.findOneAndUpdate(
+    { _id: req.user.id },
+    { cartData: userData.cartData }
+  );
+  res.send("Added");
+});
+
+// Creating endpoint for removing products in cartdata
+app.post("/removefromcart", fetchUser, async (req, res) => {
+  console.log("removed", req.body.itemId);
+  let userData = await Users.findOne({ _id: req.user.id });
+  if (userData.cartData[req.body.itemId] > 0)
+    userData.cartData[req.body.itemId] -= 1;
+  await Users.findOneAndUpdate(
+    { _id: req.user.id },
+    { cartData: userData.cartData }
+  );
+  res.send("Removed");
+});
+
+app.listen(port, (error) => {
   if (!error) {
-    console.log("Server Running on Port " + 4000);
+    console.log("Server Running on Port " + port);
   } else {
     console.log("Error : " + error);
   }

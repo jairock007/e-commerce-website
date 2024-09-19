@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./CSS/LoginSignup.css";
+import swal from "sweetalert";
 
 const LoginSignup = () => {
   const [state, setState] = useState("Login");
@@ -31,7 +32,7 @@ const LoginSignup = () => {
       localStorage.setItem("auth-token", responseData.token);
       window.location.replace("/");
     } else {
-      alert(responseData.errors);
+      swal(responseData.title, responseData.text, responseData.icon);
     }
   };
 
@@ -53,7 +54,7 @@ const LoginSignup = () => {
       localStorage.setItem("auth-token", responseData.token);
       window.location.replace("/");
     } else {
-      alert(responseData.errors);
+      swal(responseData.title, responseData.text, responseData.icon);
     }
   };
 
