@@ -243,8 +243,8 @@ const fetchUser = async (req, res, next) => {
       const data = jwt.verify(token, "secret_ecom");
       req.user = data.user;
       next();
-    } catch (error) {
-      req
+    } catch (errors) {
+      res
         .status(401)
         .send({ errors: "please authenticate using a valid token" });
     }
@@ -263,7 +263,7 @@ app.post("/addtocart", fetchUser, async (req, res) => {
   res.send("Added");
 });
 
-// Creating endpoint for removing products in cartdata
+// Creating endpoint for remove products in cartdata
 app.post("/removefromcart", fetchUser, async (req, res) => {
   console.log("removed", req.body.itemId);
   let userData = await Users.findOne({ _id: req.user.id });
