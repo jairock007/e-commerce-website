@@ -8,8 +8,17 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI);
+// Improved error handling for MongoDB connection
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+    process.exit(1);
+  });
 
 // Product Schema
 const Product = mongoose.model("Product", {
@@ -32,7 +41,7 @@ const Users = mongoose.model("Users", {
   date: { type: Date, default: Date.now },
 });
 
-// Middleware to fetch user
+// Middleware to fetch user (with improved error handling)
 const fetchUser = async (req, res, next) => {
   const token = req.header("auth-token");
   if (!token) {
@@ -45,11 +54,12 @@ const fetchUser = async (req, res, next) => {
     req.user = data.user;
     next();
   } catch (error) {
+    console.error("JWT verification error:", error);
     res.status(401).json({ errors: "Please authenticate using a valid token" });
   }
 };
 
-// Routes
+// Routes (with improved error handling)
 app.get("/api", (req, res) => {
   res.json({ message: "Backend is running" });
 });
@@ -69,6 +79,7 @@ app.post("/api/addproduct", async (req, res) => {
     await product.save();
     res.json({ success: true, name: req.body.name });
   } catch (error) {
+    console.error("Error adding product:", error);
     res.status(500).json({ success: false, error: error.message });
   }
 });
@@ -208,5 +219,23 @@ app.post("/api/getcart", fetchUser, async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: "Something went wrong!" });
+});
+
+// Wrap the entire app in a try-catch block
+const wrappedApp = async (req, res) => {
+  try {
+    await app(req, res);
+  } catch (e) {
+    console.error("Unhandled error in app:", e);
+    res.status(500).json({ error: "An unexpected error occurred" });
+  }
+};
+
+module.exports = wrappedApp;
 
 module.exports = app;
