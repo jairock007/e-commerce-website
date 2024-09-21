@@ -34,6 +34,9 @@ const storage = new CloudinaryStorage({
   },
 });
 
+// Set up multer with Cloudinary storage
+const upload = multer({ storage: storage });
+
 // Updated MongoDB connection
 mongoose
   .connect(process.env.MONGODB_URI, {
@@ -89,13 +92,10 @@ app.get("/api", (req, res) => {
   res.json({ message: "Backend is running" });
 });
 
-// Update addproduct route to handle image upload
+// Update the addproduct route
 app.post("/api/addproduct", upload.single("image"), async (req, res) => {
   try {
-    let products = await Product.find({});
-    let id = products.length > 0 ? products[products.length - 1].id + 1 : 1;
     const product = new Product({
-      id,
       name: req.body.name,
       image: req.file.path, // This will be the Cloudinary URL
       category: req.body.category,
@@ -103,7 +103,7 @@ app.post("/api/addproduct", upload.single("image"), async (req, res) => {
       old_price: req.body.old_price,
     });
     await product.save();
-    res.json({ success: true, name: req.body.name, image: req.file.path });
+    res.json({ success: true, product });
   } catch (error) {
     console.error("Error adding product:", error);
     res.status(500).json({ success: false, error: error.message });
