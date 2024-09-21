@@ -14,13 +14,13 @@ const ShopContextProvider = (props) => {
   const [all_product, setAll_Product] = useState([]);
   const [cartItems, setCartItems] = useState(getDefaultCart());
   useEffect(() => {
-    fetch("https://e-commerce-website-gtm9.vercel.app/api/allproducts")
+    fetch("https://e-commerce-website-cid1.vercel.app/api/allproducts")
       .then((response) => response.json())
       .then((data) => setAll_Product(data))
       .catch((error) => console.error("Error fetching products:", error));
 
     if (localStorage.getItem("auth-token")) {
-      fetch("https://e-commerce-website-gtm9.vercel.app/api/getcart", {
+      fetch("https://e-commerce-website-cid1.vercel.app/api/getcart", {
         method: "POST",
         headers: {
           "Accept": "application/json", // Ensure this matches the format you expect
@@ -46,7 +46,7 @@ const ShopContextProvider = (props) => {
     });
 
     if (localStorage.getItem("auth-token")) {
-      fetch("https://e-commerce-website-gtm9.vercel.app/api/addtocart", {
+      fetch("https://e-commerce-website-cid1.vercel.app/api/addtocart", {
         method: "POST",
         headers: {
           Accept: "application/json", // Corrected 'Accept' header
@@ -68,7 +68,7 @@ const ShopContextProvider = (props) => {
     });
 
     if (localStorage.getItem("auth-token")) {
-      fetch("https://e-commerce-website-gtm9.vercel.app/api/removefromcart", {
+      fetch("https://e-commerce-website-cid1.vercel.app/api/removefromcart", {
         method: "POST",
         headers: {
           Accept: "application/json", // Corrected 'Accept' header
