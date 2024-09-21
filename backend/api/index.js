@@ -1,12 +1,32 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const multer = require("multer");
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Configure Cloudinary storage
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "product_images",
+    allowed_formats: ["jpg", "png", "jpeg"],
+  },
+});
 
 // Improved error handling for MongoDB connection
 mongoose
@@ -20,11 +40,11 @@ mongoose
     process.exit(1);
   });
 
-// Product Schema
+// Product Schema (update to use Cloudinary URL)
 const Product = mongoose.model("Product", {
   id: { type: Number, required: true },
   name: { type: String, required: true },
-  image: { type: String, required: true },
+  image: { type: String, required: true }, // This will store the Cloudinary URL
   category: { type: String, required: true },
   new_price: { type: Number, required: true },
   old_price: { type: Number, required: true },
@@ -64,20 +84,21 @@ app.get("/api", (req, res) => {
   res.json({ message: "Backend is running" });
 });
 
-app.post("/api/addproduct", async (req, res) => {
+// Update addproduct route to handle image upload
+app.post("/api/addproduct", upload.single("image"), async (req, res) => {
   try {
     let products = await Product.find({});
     let id = products.length > 0 ? products[products.length - 1].id + 1 : 1;
     const product = new Product({
       id,
       name: req.body.name,
-      image: req.body.image,
+      image: req.file.path, // This will be the Cloudinary URL
       category: req.body.category,
       new_price: req.body.new_price,
       old_price: req.body.old_price,
     });
     await product.save();
-    res.json({ success: true, name: req.body.name });
+    res.json({ success: true, name: req.body.name, image: req.file.path });
   } catch (error) {
     console.error("Error adding product:", error);
     res.status(500).json({ success: false, error: error.message });
