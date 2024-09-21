@@ -12,6 +12,12 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+// Add this near the top of your api/index.js file
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection at:", promise, "reason:", reason);
+  // Application specific logging, throwing an error, or other logic here
+});
+
 // Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -28,10 +34,9 @@ const storage = new CloudinaryStorage({
   },
 });
 
-// Improved error handling for MongoDB connection
+// Updated MongoDB connection
 mongoose
   .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() => console.log("Connected to MongoDB"))
@@ -241,10 +246,13 @@ app.post("/api/getcart", fetchUser, async (req, res) => {
   }
 });
 
-// Global error handler
+// Modify your global error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ error: "Something went wrong!" });
+  res.status(500).json({
+    error: "Something went wrong!",
+    details: process.env.NODE_ENV === "development" ? err.message : undefined,
+  });
 });
 
 // Wrap the entire app in a try-catch block
