@@ -123,7 +123,7 @@ const ShopContextProvider = (props) => {
 
   // Conditionally render the loading effect
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <img className="spinner" src="spinner.svg" alt="loading..." />;
   }
 
   const contextValue = {
