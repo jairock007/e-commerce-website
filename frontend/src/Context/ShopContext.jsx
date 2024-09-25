@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
-import './CSS/ShopContext.css';
+import '../Pages/CSS/ShopContext.css';
 
 export const ShopContext = createContext(null);
 
