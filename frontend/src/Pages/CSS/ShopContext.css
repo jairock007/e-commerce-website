@@ -1,0 +1,9 @@
+.container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .spinner {
+    height: 24rem;
+  }
+  

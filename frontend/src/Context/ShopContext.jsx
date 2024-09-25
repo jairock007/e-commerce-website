@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
+import './CSS/ShopContext.css';
 
 export const ShopContext = createContext(null);
 
@@ -123,7 +124,9 @@ const ShopContextProvider = (props) => {
 
   // Conditionally render the loading effect
   if (isLoading) {
-    return <img className="spinner" src="spinner.svg" alt="loading..." />;
+    return <div class="container">
+      <img class="spinner" src="spinner.svg" alt="loading..." />
+    </div>
   }
 
   const contextValue = {
