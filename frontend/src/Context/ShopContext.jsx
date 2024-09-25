@@ -124,8 +124,8 @@ const ShopContextProvider = (props) => {
 
   // Conditionally render the loading effect
   if (isLoading) {
-    return <div class="container">
-      <img class="spinner" src="spinner.svg" alt="loading..." />
+    return <div className="container">
+      <img className="spinner" src="spinner.svg" alt="loading..." />
     </div>
   }
 
