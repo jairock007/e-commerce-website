@@ -13,11 +13,21 @@ const getDefaultCart = () => {
 const ShopContextProvider = (props) => {
   const [all_product, setAll_Product] = useState([]);
   const [cartItems, setCartItems] = useState(getDefaultCart());
+  const [isLoading, setIsLoading] = useState(true); // Add a loading state
+
   useEffect(() => {
+    setIsLoading(true); // Set loading state to true before fetching data
+
     fetch("https://e-commerce-website-cid1.vercel.app/api/allproducts")
       .then((response) => response.json())
-      .then((data) => setAll_Product(data))
-      .catch((error) => console.error("Error fetching products:", error));
+      .then((data) => {
+        setAll_Product(data);
+        setIsLoading(false); // Set loading state to false after fetching data
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+        setIsLoading(false); // Set loading state to false on error
+      });
 
     if (localStorage.getItem("auth-token")) {
       fetch("https://e-commerce-website-cid1.vercel.app/api/getcart", {
@@ -34,8 +44,14 @@ const ShopContextProvider = (props) => {
           }
           return response.json();
         })
-        .then((data) => setCartItems(data))
-        .catch((error) => console.error("Error fetching cart:", error));
+        .then((data) => {
+          setCartItems(data);
+          setIsLoading(false); // Set loading state to false after fetching data
+        })
+        .catch((error) => {
+          console.error("Error fetching cart:", error);
+          setIsLoading(false); // Set loading state to false on error
+        });
     }
   }, []);
 
@@ -105,6 +121,11 @@ const ShopContextProvider = (props) => {
     return totalItem;
   };
 
+  // Conditionally render the loading effect
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   const contextValue = {
     getTotalCartItems,
     getTotalCartAmount,
@@ -112,6 +133,7 @@ const ShopContextProvider = (props) => {
     cartItems,
     addToCart,
     removeFromCart,
+    isLoading,
   };
   return (
     <ShopContext.Provider value={contextValue}>
