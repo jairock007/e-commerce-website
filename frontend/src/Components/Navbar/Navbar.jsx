@@ -5,11 +5,14 @@ import cart_icon from "../Assets/cart_icon.png";
 import { Link } from "react-router-dom";
 import { ShopContext } from "../../Context/ShopContext";
 import nav_dropdown from "../Assets/nav_dropdown.png";
+import { MdWbSunny } from "react-icons/md";
+import { IoMoonSharp } from "react-icons/io5";
 
 const NavBar = () => {
   const [menu, setMenu] = useState("shop");
   const { getTotalCartItems } = useContext(ShopContext);
   const menuRef = useRef();
+  const { isDarkMode, toggleDarkMode } = useContext(ShopContext);
 
   const dropdown_toggle = (e) => {
     menuRef.current.classList.toggle("nav-menu-visible");
@@ -91,6 +94,9 @@ const NavBar = () => {
           <img src={cart_icon} alt="" />
         </Link>
         <div className="nav-cart-count">{getTotalCartItems()}</div>
+        <button className="dark-mode-toggle" onClick={toggleDarkMode} aria-label="Toggle dark mode">
+          {isDarkMode ? <MdWbSunny /> : <IoMoonSharp />}
+        </button>
       </div>
     </div>
   </>

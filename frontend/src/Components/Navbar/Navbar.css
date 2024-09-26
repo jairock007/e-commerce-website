@@ -76,7 +76,39 @@
 .nav-dropdown {
     display: none;
 }
+.dark-mode-toggle {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    border: none;
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .dark-mode-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .dark-mode-toggle svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }  
 
+  body.dark-mode .dark-mode-toggle {
+    background-color: var(--text-color);
+    color: var(--background-color);
+  }
 @media (max-width:1280px) {
     .navbar {
         padding: 12px 50px;
@@ -151,6 +183,17 @@
     .nav-dropdown.open {
         transform: rotate(90deg);
     }
+    .dark-mode-toggle {
+        width: 2.5rem;
+        height: 2.5rem;
+        bottom: 1rem;
+        right: 1rem;
+      }
+    
+      .dark-mode-toggle svg {
+        width: 1.2rem;
+        height: 1.2rem;
+      }
 
 }
 @media (max-width:500px) {
@@ -168,4 +211,15 @@
     .nav-login-cart {
         transform: scale(0.8);
     }
+    .dark-mode-toggle {
+        width: 2rem;
+        height: 2rem;
+        top:3.6rem;
+        left: 5rem;
+      }
+    
+      .dark-mode-toggle svg {
+        width: 1rem;
+        height: 1rem;
+      }
 }
