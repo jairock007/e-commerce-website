@@ -94,9 +94,9 @@ const NavBar = () => {
           <img src={cart_icon} alt="" />
         </Link>
         <div className="nav-cart-count">{getTotalCartItems()}</div>
-        <button className="dark-mode-toggle" onClick={toggleDarkMode} aria-label="Toggle dark mode">
+        {/* <button className="dark-mode-toggle" onClick={toggleDarkMode} aria-label="Toggle dark mode">
           {isDarkMode ? <MdWbSunny /> : <IoMoonSharp />}
-        </button>
+        </button> */}
       </div>
     </div>
   </>

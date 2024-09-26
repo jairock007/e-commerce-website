@@ -15,7 +15,7 @@ const ShopContextProvider = (props) => {
   const [all_product, setAll_Product] = useState([]);
   const [cartItems, setCartItems] = useState(getDefaultCart());
   const [isLoading, setIsLoading] = useState(true); // Add a loading state
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
     setIsLoading(true); // Set loading state to true before fetching data
@@ -69,7 +69,7 @@ const ShopContextProvider = (props) => {
   }, [isDarkMode]);
 
   const applyTheme = (dark) => {
-    document.body.classList.toggle('dark-mode', dark);
+    document.body.classList.toggle('dark-mode', !dark);
   };
 
   const toggleDarkMode = () => {
