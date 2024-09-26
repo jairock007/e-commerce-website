@@ -15,7 +15,6 @@ const ShopContextProvider = (props) => {
   const [all_product, setAll_Product] = useState([]);
   const [cartItems, setCartItems] = useState(getDefaultCart());
   const [isLoading, setIsLoading] = useState(true); // Add a loading state
-  const [isDarkMode, setIsDarkMode] = useState(false); // Add a state for dark mode
 
   useEffect(() => {
     setIsLoading(true); // Set loading state to true before fetching data
@@ -56,10 +55,6 @@ const ShopContextProvider = (props) => {
         });
     }
   }, []);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
 
   const addToCart = (itemId) => {
     setCartItems((prev) => {
@@ -142,14 +137,10 @@ const ShopContextProvider = (props) => {
     addToCart,
     removeFromCart,
     isLoading,
-    isDarkMode, // Include the dark mode state in the context value
-    toggleDarkMode, // Include the toggleDarkMode function in the context value
   };
   return (
     <ShopContext.Provider value={contextValue}>
-      <div className={isDarkMode ? "dark-mode" : "light-mode"}>
-        {props.children}
-      </div>
+      {props.children}
     </ShopContext.Provider>
   );
 };

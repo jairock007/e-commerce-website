@@ -16,7 +16,7 @@ const NavBar = () => {
     e.target.classList.toggle("open");
   };
 
-  return (
+  return (<>
     <div className="navbar">
       <div className="nav-logo">
         <Link to="/">
@@ -93,6 +93,7 @@ const NavBar = () => {
         <div className="nav-cart-count">{getTotalCartItems()}</div>
       </div>
     </div>
+  </>
   );
 };
 
