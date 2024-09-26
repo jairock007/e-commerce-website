@@ -57,6 +57,10 @@ const ShopContextProvider = (props) => {
     }
   }, []);
 
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
   const addToCart = (itemId) => {
     setCartItems((prev) => {
       const currentQuantity = prev[itemId] || 0; // If prev[itemId] is undefined, default to 0
